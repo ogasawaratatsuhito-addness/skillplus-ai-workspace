@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIと働く作業場＋Addness｜スキルプラス生向けセットアップ</title>
+<style>
+  :root{--navy:#1c2b4a;--teal:#2f8f83;--cream:#f6f3ec;--coral:#d2691e;--muted:#6b7690;}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;background:var(--cream);color:var(--navy);line-height:1.7}
+  .wrap{max-width:880px;margin:0 auto;padding:40px 20px 80px}
+  header h1{font-size:30px;margin:0 0 8px;font-weight:800}
+  header p{margin:0;color:var(--muted)}
+  .hero{margin:28px 0;border-radius:16px;overflow:hidden;box-shadow:0 6px 24px rgba(28,43,74,.1)}
+  .hero img{width:100%;display:block}
+  .card{background:#fff;border-radius:16px;padding:24px 24px 20px;margin:20px 0;box-shadow:0 4px 18px rgba(28,43,74,.06)}
+  .card h2{margin:0 0 10px;font-size:22px;font-weight:800}
+  .card h2 span{display:inline-flex;width:34px;height:34px;border-radius:50%;background:var(--navy);color:#fff;align-items:center;justify-content:center;font-size:18px;margin-right:10px;vertical-align:middle}
+  .card.hl h2 span{background:var(--teal)}
+  ul{margin:8px 0 0;padding-left:22px}
+  li{margin:4px 0}
+  .prompt{background:#f0f4f8;border:2px dashed #b8c4d6;border-radius:12px;padding:16px;font-size:16px;word-break:break-all;margin:12px 0}
+  .btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+  .btn{display:inline-block;padding:12px 18px;border-radius:999px;font-weight:700;text-decoration:none;cursor:pointer;border:0;font-size:15px}
+  .btn.primary{background:var(--navy);color:#fff}
+  .btn.teal{background:var(--teal);color:#fff}
+  .btn.ghost{background:#fff;color:var(--navy);border:2px solid var(--navy)}
+  .note{font-size:14px;color:var(--muted)}
+  .tag{display:inline-block;background:#e6f4f1;color:var(--teal);font-size:13px;font-weight:700;padding:2px 12px;border-radius:999px;margin-left:8px;vertical-align:middle}
+  .tag.home{background:#fff1e6;color:var(--coral)}
+  .faq dt{font-weight:700;margin-top:12px}
+  .faq dd{margin:2px 0 0 0;color:#3b4a6b}
+  footer{margin-top:40px;font-size:13px;color:var(--muted)}
+  .toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:999px;opacity:0;transition:.3s}
+  .toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>AIと働く「作業場」＋Addness を立ち上げる</h1>
+    <p>スキルプラス生向け。やることは3つ。<b>AIアプリを入れる → 下のことばをAIに送る → AIの案内に答える。</b>あとはAIが最後まで連れていきます。</p>
+  </header>
+
+  <div class="hero"><img src="journey.png" alt="全体の流れ: 1 作業場をセットアップ / 2 Addnessに入ってAIとつなぐ / 3 AIラボで目標設定→Addnessにゴール / 4 AIエージェントで進める"></div>
+
+  <div class="card">
+    <h2><span>1</span>AIアプリを入れてサインインする</h2>
+    <ul>
+      <li>Claude派 → <a href="https://claude.ai/api/desktop/darwin/universal/dmg/latest/redirect">Mac用Claude</a>／<a href="https://claude.ai/api/desktop/win32/x64/setup/latest/redirect">Windows用Claude</a>（Claude Pro以上）</li>
+      <li>ChatGPT派 → <a href="https://persistent.oaistatic.com/codex-app-prod/Codex.dmg">Mac用Codex</a>／<a href="https://apps.microsoft.com/detail/9plm9xgg6vks">Windows用Codex</a>（ChatGPT Plus以上）</li>
+      <li>どちらでも同じところまで行けます。迷ったらいま契約している方で</li>
+    </ul>
+    <p class="note">PC（Mac／Windows）が必要です。スマホだけではセットアップできません。</p>
+  </div>
+
+  <div class="card hl">
+    <h2><span>2</span>AIに、このことばを送る</h2>
+    <p>アプリを開いたら、入力欄に下のことばをそのまま貼って送ってください。AIがこのページの台本を読み、あなたに合わせて順番に案内します。</p>
+    <div class="prompt" id="prompt">次のURLの台本を読んで、スキルプラス生向けの「AIと働く作業場＋Addness」のセットアップを、私と対話しながら上から順にガイドしてください。 https://__PAGES_URL__/GUIDE.md</div>
+    <div class="btns">
+      <button class="btn primary" onclick="copyPrompt()">ことばをコピー</button>
+      <a class="btn ghost" id="claudeLink" href="#">Claudeで開く</a>
+      <a class="btn ghost" id="codexLink" href="#">Codexで開く</a>
+    </div>
+    <p class="note">ボタンで開かない時は、コピーして入力欄に貼れば同じです。途中でやめても、次回同じことばを送れば続きから再開できます。</p>
+  </div>
+
+  <div class="card">
+    <h2><span>3</span>AIの案内に答えていく</h2>
+    <p>AIが順番に案内するのはこの4つ。あなたがやるのは、ブラウザでのログイン・「許可する」・カード情報とクーポンコードの入力だけです。</p>
+    <ul>
+      <li><b>Addnessに入る</b> — Pro以上のプランを選び、カード登録時に<b>クーポンコード</b>を入力（スキルプラス生は1ヶ月無料。コードはグルサポで受け取れます）<span class="tag">今日中</span></li>
+      <li><b>作業場を置く</b> — AIがアドネス公式の「作業場のもと」をデスクトップに置きます<span class="tag">今日中</span></li>
+      <li><b>AIとAddnessをつなぐ（MCP）</b> — AIがコマンドを実行、あなたはブラウザで「許可する」を押すだけ<span class="tag">今日中</span></li>
+      <li><b>目標設定→Addnessにゴール</b> — 秘密のAIラボで目標設定（マスタープラン診断）をして、その目標をAddnessに入れる<span class="tag home">自分のペースで</span></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>あしたからの合言葉</h2>
+    <p>メイン作業場を開いて、これだけ送れば仕事が始まります。</p>
+    <div class="prompt">Addnessのゴールの続きを、一緒に進めて。</div>
+  </div>
+
+  <div class="card faq">
+    <h2>よくある質問</h2>
+    <dl>
+      <dt>フリープランでもAIとつなげますか？</dt><dd>つなげません。Pro以上が必要です。クーポンで1ヶ月無料になります。</dd>
+      <dt>ProとFocus、どっち？</dt><dd>まずはProで十分。議事録Botや画面録画をたくさん使うならFocus。</dd>
+      <dt>すでにAddnessを使っています</dt><dd>そのまま使えます。有料プランに上げるときはクーポンが使えます。</dd>
+      <dt>作業場は複数作っていい？</dt><dd>1つにしてください。既存のフォルダはセットアップの中で「巻き込む」手順があります。</dd>
+      <dt>Windowsですが</dt><dd>問題ありません。Web版Addness＋Claude Code／Codexで同じところまで行けます。</dd>
+      <dt>途中で止まりました</dt><dd>スクリーンショットと「どこで止まったか」を、スキルプラスのサポートLINEへ。金曜20:00のグルサポでも一緒に進められます。</dd>
+    </dl>
+  </div>
+
+  <footer>参考: アドネス公式 <a href="https://pultako1.github.io/addness-starter-kit/">AIと働く環境の立ち上げガイド</a>／スキルプラスCS 小笠原・2026-09-04 v1</footer>
+</div>
+<div class="toast" id="toast">コピーしました</div>
+<script>
+  const base = location.origin + location.pathname.replace(/\/[^\/]*$/, '');
+  const guide = base + '/GUIDE.md';
+  const text = '次のURLの台本を読んで、スキルプラス生向けの「AIと働く作業場＋Addness」のセットアップを、私と対話しながら上から順にガイドしてください。 ' + guide;
+  document.getElementById('prompt').textContent = text;
+  document.getElementById('claudeLink').href = 'claude://code/new?q=' + encodeURIComponent(text);
+  document.getElementById('codexLink').href = 'codex://threads/new?prompt=' + encodeURIComponent(text);
+  function copyPrompt(){
+    navigator.clipboard.writeText(text).then(()=>{const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1600);});
+  }
+</script>
+</body>
+</html>
